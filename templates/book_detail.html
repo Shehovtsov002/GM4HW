@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ book.title }}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/book_detail.css' %}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa; /* цвет фона страницы */
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+
+        .book-details {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* тень блока */
+            text-align: center; /* центрирование контента */
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 20px;
+            display: block; /* делаем изображение блочным элементом для центрирования */
+            margin: 0 auto; /* центрируем изображение по горизонтали */
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            margin-bottom: 10px;
+        }
+
+        a {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        a:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="book-details">
+        <img src="{{ book.cover.url }}" alt="Обложка книги">
+        <h1>{{ book.title }}</h1>
+        <h2>{{ book.author }}</h2>
+        <p>{{ book.description }}</p>
+        <p>Возрастное ограничение: {{ book.age_restriction }}+</p>
+        <p>Цена: {{ book.price }} сом</p>
+        <p>Язык книги: {{ book.localization }}</p>
+        <p>Дата выпуска: {{ book.created_at }}</p>
+        <a href="{{ book.audio.url }}">Скачать аудиокнигу</a>
+        <a href="{{ book.author_wiki }}">Больше информации об авторе</a>
+    </div>
+</div>
+</body>
+</html>
