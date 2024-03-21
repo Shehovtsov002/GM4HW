@@ -1,4 +1,5 @@
 from django.db import models
+from user_profile.models import UserProfile
 
 
 # Create your models here.
@@ -9,15 +10,12 @@ class Book(models.Model):
         ('Русский', 'Русский')
     )
     title = models.CharField(null=True, max_length=50, verbose_name="Название книги")
-    author = models.CharField(null=True, max_length=50, verbose_name="Автор")
-    author_wiki = models.URLField(null=True, blank=True, verbose_name="Ссылка на вики автора")
+    author = models.ForeignKey(UserProfile, on_delete=models.CASCADE, verbose_name="Author", null=False, default=None)
     description = models.TextField(null=True, verbose_name="Описание книги")
     cover = models.ImageField(upload_to='images/', verbose_name="Загрузите обложку книги", null=True)
-    audio = models.FileField(upload_to='audio/', verbose_name="Загрузите аудиокнигу", null=True)
     age_restriction = models.PositiveSmallIntegerField(default=0, verbose_name="Возрастное ограничение от")
-    price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Укажите цену", default=100)
     localization = models.CharField(null=True, max_length=25, choices=LOCALIZATION_CHOICES, verbose_name="Язык книги")
-    created_at = models.DateField(null=True, verbose_name="Дата выпуска")
+    created_at = models.DateField(null=True, verbose_name="Дата выпуска", auto_now_add=True)
 
     def __str__(self):
         return self.title
@@ -25,3 +23,20 @@ class Book(models.Model):
     class Meta:
         verbose_name = "Книга"
         verbose_name_plural = "Книги"
+
+
+class Chapter(models.Model):
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    title = models.CharField(max_length=50, verbose_name="Inter title")
+    text = models.TextField(verbose_name="Text", null=True)
+    created_at = models.DateField(auto_now_add=True)
+    number = models.PositiveSmallIntegerField(editable=False, blank=True)
+
+    def save(self, *args, **kwargs):
+        if not self.number:
+            last_chapter = Chapter.objects.filter(book=self.book).order_by('-number').first()
+            if last_chapter:
+                self.number = last_chapter.number + 1
+            else:
+                self.number = 1
+        super().save(*args, **kwargs)
