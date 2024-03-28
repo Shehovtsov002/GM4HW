@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<ul>
+    {% for i in house %}
+    <li>
+        <a href="{{i.link}}"><h1>{{i.title}}</h1></a>
+        <p>{{i.address}}</p>
+    </li>
+    {% endfor %}
+</ul>
+</body>
+</html>

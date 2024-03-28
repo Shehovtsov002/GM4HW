@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<ul>
+    {% for i in bazar %}
+    <li>
+        <a href="{{i.link}}"><h1>{{i.title}}</h1></a>
+        <p>{{i.price}}</p>
+    </li>
+    {% endfor %}
+</ul>
+</body>
+</html>
