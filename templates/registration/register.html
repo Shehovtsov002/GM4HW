@@ -1,15 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Register</title>
-</head>
-<body>
+{% include 'header_and_footer/header.html' %}
 <h1>Registration</h1>
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{form.as_p}}
     <button type="submit">Register</button>
 </form>
-</body>
-</html>
+{% include 'header_and_footer/footer.html' %}

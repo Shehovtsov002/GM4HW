@@ -1,15 +1,4 @@
-<!doctype html>
-{% load static %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="{% static 'css/books_style.css' %}">
-    <title>Книги</title>
-</head>
-<body>
+{% include 'header_and_footer/header.html' %}
 <h1>
     Все книги
 </h1>
@@ -33,6 +22,4 @@
 <h1>
     <a href="/create_book/">Add book</a>
 </h1>
-
-</body>
-</html>
+{% include 'header_and_footer/footer.html' %}

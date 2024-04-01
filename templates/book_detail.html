@@ -1,13 +1,4 @@
-<!DOCTYPE html>
-{% load static %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ book.title }}</title>
-    <link rel="stylesheet" href="{% static 'css/book_detail.css' %}">
-</head>
-<body>
+{% include 'header_and_footer/header.html' %}
 <div class="container">
     <div class="book-details">
         <img src="{{ book.cover.url }}" alt="Обложка книги">
@@ -23,5 +14,4 @@
         <a href="/books/{{book.id}}/update/">Update</a>
     </div>
 </div>
-</body>
-</html>
+{% include 'header_and_footer/footer.html' %}
