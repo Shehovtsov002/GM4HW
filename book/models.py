@@ -10,7 +10,7 @@ class Book(models.Model):
         ('Русский', 'Русский')
     )
     title = models.CharField(null=True, max_length=50, verbose_name="Название книги")
-    author = models.ForeignKey(UserProfile, on_delete=models.CASCADE, verbose_name="Author", null=False, default=None)
+    author = models.ForeignKey(UserProfile, on_delete=models.CASCADE, verbose_name="Author", null=False, default=1)
     description = models.TextField(null=True, verbose_name="Описание книги")
     cover = models.ImageField(upload_to='images/', verbose_name="Загрузите обложку книги", null=True)
     age_restriction = models.PositiveSmallIntegerField(default=0, verbose_name="Возрастное ограничение от")

@@ -1,18 +1,14 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 # Create your models here.
-class UserProfile(models.Model):
-    login = models.CharField(max_length=25, unique=True, verbose_name='Inter login')
-    password = models.CharField(max_length=25, verbose_name='Inter password')
-    email = models.EmailField()
-    name = models.CharField(max_length=25, unique=True, verbose_name='Inter name')
-    author = models.BooleanField(default=False, verbose_name='Can posts')
+class UserProfile(User):
+    gender = models.CharField(null=True, blank=True, max_length=10, choices=(('M', 'Male'), ('F', 'Female')))
+    author = models.BooleanField(null=True, blank=True, default=False, verbose_name='Can posts')
     avatar = models.ImageField(upload_to='images/', verbose_name="Load user avatar", null=True, blank=True)
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        verbose_name = 'Профиль'
-        verbose_name_plural = 'Профили'
+    biography = models.TextField(null=True, blank=True)
+    social = models.URLField(null=True, blank=True)
+    birth_date = models.DateField(null=True, blank=True)
+    country = models.CharField(max_length=100, null=True, blank=True)
+    experience = models.IntegerField(null=True, blank=True, default=0)
