@@ -26,7 +26,7 @@ class Book(models.Model):
 
 
 class Chapter(models.Model):
-    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='chapters')
     title = models.CharField(max_length=50, verbose_name="Inter title")
     text = models.TextField(verbose_name="Text", null=True)
     created_at = models.DateField(auto_now_add=True)

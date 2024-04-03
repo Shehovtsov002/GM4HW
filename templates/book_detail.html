@@ -1,17 +1,28 @@
 {% include 'header_and_footer/header.html' %}
 <div class="container">
     <div class="book-details">
-        <img src="{{ book.cover.url }}" alt="Обложка книги">
-        <h1>{{ book.title }}</h1>
-        <h2>{{ book.author }}</h2>
-        <p>{{ book.description }}</p>
-        <p>Возрастное ограничение: {{ book.age_restriction }}+</p>
-        <p>Язык книги: {{ book.localization }}</p>
-        <p>Добавлена: {{ book.created_at }}</p>
+        <img src="{{ book_id.cover.url }}" alt="Обложка книги">
+        <h1>{{ book_id.title }}</h1>
+        <h2>{{ book_id.author }}</h2>
+        <p>{{ book_id.description }}</p>
+        <p>Возрастное ограничение: {{ book_id.age_restriction }}+</p>
+        <p>Язык книги: {{ book_id.localization }}</p>
+        <p>Добавлена: {{ book_id.created_at }}</p>
         <br><br><br>
 
-        <a href="/books/{{book.id}}/delete/">Delete</a>
-        <a href="/books/{{book.id}}/update/">Update</a>
+        <a href="/books/{{book_id.id}}/delete/">Delete</a>
+        <a href="/books/{{book_id.id}}/update/">Update</a>
+        <br><br><br><br><br>
+
+        <h1>Chapters:</h1>
+        <ol class="chapter-list">
+            {% for i in book_id.chapters.all %}
+            <li>
+                <h2>{{i.number}}.{{i.title}}</h2>
+                <p>{{i.created_at}}</p>
+            </li>
+            {% endfor %}
+        </ol>
     </div>
 </div>
 {% include 'header_and_footer/footer.html' %}

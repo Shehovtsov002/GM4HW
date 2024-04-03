@@ -1,46 +1,72 @@
-from django.http import HttpResponse
-from django.shortcuts import render, get_object_or_404
-
-from book.forms import BookForm
-from book.models import Book
-
-
-def book_list_view(request):
-    if request.method == 'GET':
-        query = Book.objects.all()
-        return render(request, 'book_list.html', {'query': query})
+from django.shortcuts import get_object_or_404
+from django.views import generic
+from book.forms import BookForm, ChapterForm
+from book.models import Book, Chapter
 
 
-def book_detail_view(request, book_id):
-    if request.method == 'GET':
-        book = get_object_or_404(Book, id=book_id)
-        return render(request, 'book_detail.html', {'book': book})
+class BookListView(generic.ListView):
+    model = Book
+    template_name = 'book_list.html'
+    context_object_name = 'book'
+
+    def get_queryset(self):
+        return self.model.objects.all()
 
 
-def book_add_view(request):
-    if request.method == 'POST':
-        form = BookForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return HttpResponse('<h1>Answer create successfully</h1>')
-    else:
-        form = BookForm()
-    return render(request, template_name='book_crud/book_add.html', context={'form': form})
+class BookDetailView(generic.DetailView):
+    model = Book
+    template_name = 'book_detail.html'
+    context_object_name = 'book_id'
+
+    def get_object(self, **kwargs):
+        book_id = self.kwargs.get('id')
+        return get_object_or_404(self.model, id=book_id)
 
 
-def book_update_view(request, book_id):
-    book = get_object_or_404(Book, id=book_id)
-    if request.method == 'POST':
-        form = BookForm(request.POST, instance=book)
-        if form.is_valid():
-            form.save()
-            return HttpResponse('<h1>Book updated successfully</h1>')
-    else:
-        form = BookForm(instance=book)
-    return render(request, template_name='book_crud/book_update.html', context={'form': form})
+class BookCreateView(generic.CreateView):
+    model = Book
+    template_name = 'book_crud/book_add.html'
+    form_class = BookForm
+    success_url = '/books/'
+
+    def form_valid(self, form):
+        return super(BookCreateView, self).form_valid(form)
 
 
-def book_delete_view(request, book_id):
-    book = get_object_or_404(Book, id=book_id)
-    book.delete()
-    return HttpResponse('<h1>Book deleted successfully</h1>')
+class BookUpdateView(generic.UpdateView):
+    model = Book
+    template_name = 'book_crud/book_update.html'
+    form_class = BookForm
+    success_url = '/books/'
+
+    def form_valid(self, form):
+        return super(BookUpdateView, self).form_valid(form)
+
+    def get_object(self, **kwargs):
+        book_id = self.kwargs.get('id')
+        return get_object_or_404(self.model, id=book_id)
+
+
+class BookDeleteView(generic.DeleteView):
+    model = Book
+    template_name = 'book_crud/book_delete.html'
+    success_url = '/books/'
+
+    def get_object(self, **kwargs):
+        book_id = self.kwargs.get('id')
+        return get_object_or_404(self.model, id=book_id)
+
+
+class SearchView(generic.ListView):
+    model = Book
+    template_name = 'book_list.html'
+    context_object_name = 'book'
+    paginate_by = '5'
+
+    def get_queryset(self):
+        return self.model.objects.filter(title__icontains=self.request.GET.get('q'))
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['q'] = self.request.GET.get('q')
+        return context

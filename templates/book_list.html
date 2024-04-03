@@ -3,7 +3,7 @@
     Все книги
 </h1>
 <ol>
-    {% for i in query %}
+    {% for i in book %}
     <li>
         <img src="{{i.cover.url}}" alt="">
         <div class="book-details">
@@ -17,7 +17,6 @@
         </div>
     </li>
     {% endfor %}
-    <li></li>
 </ol>
 <h1>
     <a href="/create_book/">Add book</a>

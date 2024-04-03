@@ -1,0 +1,8 @@
+{% include 'header_and_footer/header.html' %}
+<h1>Do you sure to remove this object?</h1>
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <button type="submit">Delete</button>
+    <button><a href="/books/">Cancel</a></button>
+</form>
+{% include 'header_and_footer/footer.html' %}
