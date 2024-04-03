@@ -2,7 +2,13 @@ from django.db import models
 from user_profile.models import UserProfile
 
 
-# Create your models here.
+class Tag(models.Model):
+    name = models.CharField(max_length=25)
+
+    def __str__(self):
+        return f'#{self.name}'
+
+
 class Book(models.Model):
     LOCALIZATION_CHOICES = (
         ('Английский', 'Английский'),
@@ -16,6 +22,7 @@ class Book(models.Model):
     age_restriction = models.PositiveSmallIntegerField(default=0, verbose_name="Возрастное ограничение от")
     localization = models.CharField(null=True, max_length=25, choices=LOCALIZATION_CHOICES, verbose_name="Язык книги")
     created_at = models.DateField(null=True, verbose_name="Дата выпуска", auto_now_add=True)
+    tags = models.ManyToManyField(Tag, verbose_name="Жанры книги", blank=True, null=True)
 
     def __str__(self):
         return self.title

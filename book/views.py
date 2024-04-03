@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404
 from django.views import generic
 from book.forms import BookForm, ChapterForm
-from book.models import Book, Chapter
+from book.models import Book, Chapter, Tag
 
 
 class BookListView(generic.ListView):
@@ -10,7 +10,16 @@ class BookListView(generic.ListView):
     context_object_name = 'book'
 
     def get_queryset(self):
-        return self.model.objects.all()
+        tag_name = self.request.GET.get('tag')
+        if tag_name:
+            return self.model.objects.filter(tags__name__in=[tag_name]).order_by('-id')
+        else:
+            return self.model.objects.all().order_by('-id')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['all_tags'] = Tag.objects.all()
+        return context
 
 
 class BookDetailView(generic.DetailView):
@@ -64,7 +73,7 @@ class SearchView(generic.ListView):
     paginate_by = '5'
 
     def get_queryset(self):
-        return self.model.objects.filter(title__icontains=self.request.GET.get('q'))
+        return self.model.objects.filter(title__icontains=self.request.GET.get('q')).order_by('-id')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)

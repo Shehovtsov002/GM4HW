@@ -1,4 +1,10 @@
 {% include 'header_and_footer/header.html' %}
+
+<h2>Genres: </h2>
+{% for tag in all_tags %}
+<a href="?tag={{ tag.name }}">{{ tag.name }}</a>
+{% endfor %}
+
 <h1>
     Все книги
 </h1>
@@ -10,6 +16,9 @@
             <div class="book-description">
                 <h2>{{i.title}}</h2>
                 <h3>Язык: {{i.localization}}</h3>
+                <p>Жанры: {% for genre in i.tags.all %}
+                    {{genre.name}} |
+                    {% endfor %}</p>
             </div>
             <div class="button-container">
                 <a href="/books/{{i.id}}">Подробнее</a>
